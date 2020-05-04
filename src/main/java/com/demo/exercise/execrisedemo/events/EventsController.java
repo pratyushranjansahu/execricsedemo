@@ -23,11 +23,13 @@ public class EventsController {
 	@ResponseBody
 	public ResponseEntity<RepositoryEvent[]> fetchEvents(@PathVariable String projectName) {
 		GithubProject project = this.repository.findByRepoName(projectName);
-		if (project == null) {
+		/*if (project == null) {
 			return ResponseEntity.notFound().build();
-		}
+		}*/
+		String orgName="spring-projects";
+		String repoNmae=projectName;
 		ResponseEntity<RepositoryEvent[]> response = this.githubClient
-				.fetchEvents(project.getOrgName(), project.getRepoName());
+				.fetchEvents(orgName, repoNmae);
 		return ResponseEntity.ok()
 				.eTag(response.getHeaders().getETag())
 				.body(response.getBody());
