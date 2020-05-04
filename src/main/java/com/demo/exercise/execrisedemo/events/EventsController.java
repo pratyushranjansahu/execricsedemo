@@ -40,8 +40,9 @@ public class EventsController {
 				.body(response.getBody());
 	}
 
-	@GetMapping("/")
-	public String dashboard(Model model) {
+	private List<GithubProject> getDummyList(){
+		
+		List<GithubProject> list=new ArrayList<>();
 		GithubProject g1=new GithubProject();
 		g1.setOrgName("spring-projects");
 		g1.setRepoName("spring-boot");
@@ -49,10 +50,15 @@ public class EventsController {
 		GithubProject g2=new GithubProject();
 		g2.setOrgName("spring-io");
 		g2.setRepoName("initializr");
-		
-		List<GithubProject> list=new ArrayList<>();
 		list.add(g1);
 		list.add(g2);
+		return list;
+	}
+	
+	@GetMapping("/")
+	public String dashboard(Model model) {
+		
+	List<GithubProject> list=getDummyList();
 		List<DashboardEntry> entries = StreamSupport
 				.stream(list.spliterator(), true)
 				.map(p -> new DashboardEntry(p, githubClient.fetchEventsList(p.getOrgName(), p.getRepoName())))
@@ -63,7 +69,7 @@ public class EventsController {
 
 	@GetMapping("/admin")
 	public String admin(Model model) {
-		model.addAttribute("projects", repository.findAll());
+		model.addAttribute("projects", getDummyList());
 		return "admin";
 	}
 
