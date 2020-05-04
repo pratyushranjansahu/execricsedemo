@@ -1,5 +1,10 @@
 package com.demo.exercise.execrisedemo.events;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,15 +40,26 @@ public class EventsController {
 				.body(response.getBody());
 	}
 
-	/*@GetMapping("/")
+	@GetMapping("/")
 	public String dashboard(Model model) {
+		GithubProject g1=new GithubProject();
+		g1.setOrgName("spring-projects");
+		g1.setRepoName("spring-boot");
+		
+		GithubProject g2=new GithubProject();
+		g2.setOrgName("spring-io");
+		g2.setRepoName("initializr");
+		
+		List<GithubProject> list=new ArrayList<>();
+		list.add(g1);
+		list.add(g2);
 		List<DashboardEntry> entries = StreamSupport
-				.stream(this.repository.findAll().spliterator(), true)
+				.stream(list.spliterator(), true)
 				.map(p -> new DashboardEntry(p, githubClient.fetchEventsList(p.getOrgName(), p.getRepoName())))
 				.collect(Collectors.toList());
 		model.addAttribute("entries", entries);
 		return "dashboard";
-	}*/
+	}
 
 	@GetMapping("/admin")
 	public String admin(Model model) {
